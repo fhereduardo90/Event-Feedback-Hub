@@ -1,15 +1,8 @@
 class FeedbacksController < ApplicationController
   def create
-    @feedback = Feedback.new(feedback_params)
+    @feedback = FeedbackCreatorService.new(feedback_params).call
 
-    if @feedback.save
-      # Broadcast the new feedback to all connected clients
-      ActionCable.server.broadcast(
-        "feedback_stream",
-        {
-          html: render_to_string(partial: "feedbacks/feedback", locals: { feedback: @feedback })
-        }
-      )
+    if @feedback.persisted?
       redirect_to feedbacks_path, notice: "Thank you for your feedback!"
     else
       @events = Event.all.order(:name)
@@ -18,11 +11,7 @@ class FeedbacksController < ApplicationController
   end
 
   def index
-    @feedbacks = Feedback.includes(:event).recent
-
-    # Apply filters
-    @feedbacks = @feedbacks.by_event(params[:event_id]) if params[:event_id].present?
-    @feedbacks = @feedbacks.by_rating(params[:rating]) if params[:rating].present?
+    @feedbacks = FeedbackFinderService.new(params).call
 
     # Paginate
     @pagy, @feedbacks = pagy(@feedbacks)
