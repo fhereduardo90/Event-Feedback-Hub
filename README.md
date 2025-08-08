@@ -1,24 +1,53 @@
-# README
+# Event Feedback Hub
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A real-time web application for collecting and viewing event feedback with interactive features.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- **Interactive Feedback Form**: Submit feedback with event selection, star ratings (1-5), and text reviews
+- **Real-time Stream**: View feedback from all users with live updates using WebSockets
+- **Filtering & Pagination**: Filter by event or rating, paginated results
+- **Responsive Design**: Clean, mobile-friendly interface built with Tailwind CSS
 
-* System dependencies
+## Tech Stack
 
-* Configuration
+- **Rails 8** with Hotwire (Turbo + Stimulus)
+- **PostgreSQL** for data persistence
+- **ActionCable** for real-time WebSocket updates
+- **Tailwind CSS** for styling
+- **Minitest** with comprehensive test coverage
 
-* Database creation
+## Setup
 
-* Database initialization
+1. **Install dependencies**
+   ```bash
+   bundle install
+   ```
 
-* How to run the test suite
+2. **Setup database**
+   ```bash
+   rails db:create db:migrate db:seed
+   ```
 
-* Services (job queues, cache servers, search engines, etc.)
+3. **Start the server**
+   ```bash
+   rails server
+   ```
 
-* Deployment instructions
+4. **Visit the application**
+   ```
+   http://localhost:3000
+   ```
 
-* ...
+## Testing
+
+Run the complete test suite:
+```bash
+rails test
+```
+
+## Requirements
+
+- Ruby 3.3+
+- PostgreSQL
+- Node.js (for asset compilation)
