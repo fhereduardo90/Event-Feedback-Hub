@@ -1,0 +1,71 @@
+<div class="max-w-6xl mx-auto">
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-2">Event Feedback Stream</h1>
+      <p class="text-lg text-gray-600">Real-time feedback from our community</p>
+    </div>
+    <div>
+      <%= link_to "Submit Feedback", root_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-200" %>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <%= form_with url: feedbacks_path, method: :get, local: true, class: "flex flex-wrap items-end gap-4" do |form| %>
+      <div class="flex-1 min-w-[200px]">
+        <%= form.label :event_id, "Filter by Event", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.select :event_id, 
+            options_from_collection_for_select(@events, :id, :name, params[:event_id]), 
+            { prompt: "All Events" }, 
+            { class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" } %>
+      </div>
+
+      <div class="flex-1 min-w-[150px]">
+        <%= form.label :rating, "Filter by Rating", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.select :rating, 
+            options_for_select([
+              ["All Ratings", ""],
+              ["5 Stars", "5"],
+              ["4 Stars", "4"], 
+              ["3 Stars", "3"],
+              ["2 Stars", "2"],
+              ["1 Star", "1"]
+            ], params[:rating]), 
+            {}, 
+            { class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" } %>
+      </div>
+
+      <div class="flex gap-2">
+        <%= form.submit "Filter", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-200" %>
+        <%= link_to "Clear", feedbacks_path, class: "bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-md transition duration-200" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Feedback List -->
+  <div id="feedbacks-list" class="space-y-6">
+    <% if @feedbacks.any? %>
+      <%= render @feedbacks %>
+    <% else %>
+      <div class="text-center py-12">
+        <div class="text-gray-400 text-6xl mb-4">💭</div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">No feedback yet</h3>
+        <p class="text-gray-600 mb-4">
+          <% if params[:event_id].present? || params[:rating].present? %>
+            No feedback found matching your filters.
+          <% else %>
+            Be the first to share your event experience!
+          <% end %>
+        </p>
+        <%= link_to "Submit Feedback", root_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-200" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Pagination -->
+  <% if @feedbacks.any? %>
+    <div class="mt-8">
+      <%= pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
+    </div>
+  <% end %>
+</div>
