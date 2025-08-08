@@ -2,6 +2,10 @@
 
 A real-time web application for collecting and viewing event feedback with interactive features.
 
+## Demo
+
+[Watch a demo of the application in action](https://drive.google.com/file/d/1CD_1_wL2tp2a5hjen9HcRXJ56OJ2Wg-d/view?usp=sharing)
+
 ## Features
 
 - **Interactive Feedback Form**: Submit feedback with event selection, star ratings (1-5), and text reviews
