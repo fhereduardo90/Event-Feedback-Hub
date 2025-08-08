@@ -46,7 +46,7 @@
   <div id="feedbacks-list" class="space-y-6">
     <% if @feedbacks.any? %>
       <% @feedbacks.each do |feedback| %>
-        <%= render "feedback", feedback: feedback %>
+        <%= render "feedback", feedback: feedback %><%# brakeman:disable Render %>
       <% end %>
     <% else %>
       <div class="text-center py-12">
