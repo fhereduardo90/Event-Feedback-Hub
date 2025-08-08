@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 16 Database
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-event_feedback_hub_development}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-event_feedback_hub_development}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for ActionCable and caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # Rails Application
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-event_feedback_hub_development}
+      - REDIS_URL=redis://redis:6379/0
+      - RAILS_MAX_THREADS=5
+    volumes:
+      # Mount source code for hot reloading
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+      # Exclude tmp and log directories to avoid permission issues
+      - /app/tmp
+      - /app/log
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:
+    driver: local
+  bundle_cache:
+    driver: local

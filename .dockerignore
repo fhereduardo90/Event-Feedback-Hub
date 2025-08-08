@@ -1,0 +1,61 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Logs and temporary files
+log/*
+tmp/*
+*.log
+*.tmp
+
+# Test files and coverage
+test/
+coverage/
+.rspec
+
+# Development tools
+.vscode/
+.idea/
+.DS_Store
+
+# Environment files
+.env*
+!.env.example
+
+# Node modules
+node_modules/
+
+# Caches
+.bundle/
+vendor/cache/
+.sass-cache/
+
+# Database files
+*.sqlite
+*.sqlite3
+
+# Assets (will be compiled in container)
+app/assets/builds/*
+public/assets
+
+# Ruby version managers
+.rvmrc
+.rbenv-version
+.ruby-version
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+
+# Editor backup files
+*~
+.*.swp
+.*.swo
+
+# Package files
+*.gem
+*.rbc

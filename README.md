@@ -17,37 +17,39 @@ A real-time web application for collecting and viewing event feedback with inter
 - **Tailwind CSS** for styling
 - **Minitest** with comprehensive test coverage
 
-## Setup
+## Getting Started
 
-1. **Install dependencies**
-   ```bash
-   bundle install
-   ```
+### With Docker (Recommended)
 
-2. **Setup database**
-   ```bash
-   rails db:create db:migrate db:seed
-   ```
+1.  **Prerequisites**: `docker` and `docker-compose`.
+2.  **Build and Run**: 
+    ```bash
+    docker-compose up --build
+    ```
+3.  **Access**: http://localhost:3000
 
-3. **Start the server**
-   ```bash
-   rails server
-   ```
+**Common Docker Commands**:
+- **Rails Console**: `docker-compose exec web rails c`
+- **Run Migrations**: `docker-compose exec web rails db:migrate`
+- **Run Seeds**: `docker-compose exec web rails db:seed`
+- **Run Tests**: `docker-compose exec web rails test`
 
-4. **Visit the application**
-   ```
-   http://localhost:3000
-   ```
+### Local Installation
 
-## Testing
+1.  **Prerequisites**: Ruby 3.3+, PostgreSQL, Node.js.
+2.  **Setup**:
+    ```bash
+    bundle install
+    rails db:create db:migrate db:seed
+    ```
+3.  **Run**:
+    ```bash
+    rails s
+    ```
+4.  **Access**: http://localhost:3000
 
-Run the complete test suite:
-```bash
-rails test
-```
-
-## Requirements
-
-- Ruby 3.3+
-- PostgreSQL
-- Node.js (for asset compilation)
+**Common Local Commands**:
+- **Rails Console**: `rails c`
+- **Run Migrations**: `rails db:migrate`
+- **Run Seeds**: `rails db:seed`
+- **Run Tests**: `rails test`
