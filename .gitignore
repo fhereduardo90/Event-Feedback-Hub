@@ -35,3 +35,28 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Development tools
+.DS_Store
+.vscode/
+.idea/
+
+# Test coverage
+/coverage/
+
+# Node modules (if any)
+/node_modules/
+
+# Temporary editor files
+*~
+.*.swp
+.*.swo
+
+# Local environment variables
+.env.local
+.env.*.local
+
+# Database dumps
+*.sql
+*.sqlite
+*.sqlite3
