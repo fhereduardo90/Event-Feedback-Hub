@@ -21,18 +21,18 @@ A real-time web application for collecting and viewing event feedback with inter
 
 ### With Docker (Recommended)
 
-1.  **Prerequisites**: `docker` and `docker-compose`.
+1.  **Prerequisites**: `docker` and `docker compose`.
 2.  **Build and Run**: 
     ```bash
-    docker-compose up --build
+    docker compose up --build
     ```
 3.  **Access**: http://localhost:3000
 
 **Common Docker Commands**:
-- **Rails Console**: `docker-compose exec web rails c`
-- **Run Migrations**: `docker-compose exec web rails db:migrate`
-- **Run Seeds**: `docker-compose exec web rails db:seed`
-- **Run Tests**: `docker-compose exec web rails test`
+- **Rails Console**: `docker compose exec web rails c`
+- **Run Migrations**: `docker compose exec web rails db:migrate`
+- **Run Seeds**: `docker compose exec web rails db:seed`
+- **Run Tests**: `docker compose exec web rails test`
 
 ### Local Installation
 
