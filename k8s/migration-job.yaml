@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rails-db-migrate
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: registry-event-feedback-hub
+      containers:
+        - name: rails-migrate
+          image: registry.digitalocean.com/event-feedback-hub/rails-app:latest
+          # Use a shell so all tasks run reliably
+          command: ["/bin/sh", "-lc", "bundle exec rails db:migrate db:seed && bundle exec rails db:migrate:cable"]
+          env:
+            - name: RAILS_ENV
+              value: "production"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rails-secrets
+                  key: database-url
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: rails-secrets
+                  key: secret-key-base

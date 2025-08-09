@@ -1,5 +1,7 @@
 # Production override for docker-compose.yml
-# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+# Usage: 
+# 1. First run: docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm web rails db:create db:migrate db:seed
+# 2. Then: docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
 
 services:
   # Rails Application - Production Build
@@ -17,6 +19,10 @@ services:
       - RAILS_LOG_TO_STDOUT=true
     # Remove development volumes - production uses precompiled assets
     volumes: []
+    # Wait for database to be ready
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   # Production database
   postgres:
@@ -24,3 +30,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-event_feedback_hub_production}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    # Add health check
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-event_feedback_hub_production}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

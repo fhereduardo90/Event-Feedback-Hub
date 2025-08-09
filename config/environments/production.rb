@@ -25,10 +25,12 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  config.assume_ssl = true
+  # Disabled for HTTP load balancer
+  config.assume_ssl = false
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # Disabled for load balancer HTTP endpoint
+  config.force_ssl = false
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
@@ -87,4 +89,12 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # ActionCable configuration for production
+  config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.allow_same_origin_as_host = false
+  config.action_cable.allowed_request_origins = [ 
+    /http:\/\/129\.212\.198\.147*/,
+    /https:\/\/129\.212\.198\.147*/
+  ]
 end

@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
+  # Mount ActionCable server
+  mount ActionCable.server => "/cable"
+
   # Home page with feedback submission form
   root "home#index"
 
