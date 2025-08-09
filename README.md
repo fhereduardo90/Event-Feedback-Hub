@@ -23,7 +23,7 @@ A real-time web application for collecting and viewing event feedback with inter
 
 ## Getting Started
 
-### With Docker (Recommended)
+### Docker Development Environment (Recommended)
 
 1.  **Prerequisites**: `docker` and `docker compose`.
 2.  **Build and Run**: 
@@ -32,11 +32,29 @@ A real-time web application for collecting and viewing event feedback with inter
     ```
 3.  **Access**: http://localhost:3000
 
-**Common Docker Commands**:
+The development environment includes:
+- ✅ Hot reloading with volume mounts
+- ✅ Debug gems and development tools
+- ✅ Automatic gem installation when Gemfile changes
+- ✅ Smart asset compilation (only when files change)
+
+**Essential Commands**:
+- **Build & Run**: `docker compose up --build`
+- **Run in Background**: `docker compose up --build -d`
+- **Stop & Remove**: `docker compose down --volumes --remove-orphans`
+
+**Development Commands**:
 - **Rails Console**: `docker compose exec web rails c`
-- **Run Migrations**: `docker compose exec web rails db:migrate`
-- **Run Seeds**: `docker compose exec web rails db:seed`
 - **Run Tests**: `docker compose exec web rails test`
+- **Run Migrations**: `docker compose exec web rails db:migrate`
+- **View Logs**: `docker compose logs -f web`
+
+### Docker Production Environment
+
+**Production Commands**:
+- **Setup**: `cp docker-compose.prod.yml.example docker-compose.prod.yml` (customize as needed)
+- **Start**: `docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build`
+- **Stop & Clean**: `docker compose -f docker-compose.yml -f docker-compose.prod.yml down --volumes`
 
 ### Local Installation
 

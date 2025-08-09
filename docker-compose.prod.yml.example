@@ -1,0 +1,26 @@
+# Production override for docker-compose.yml
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+
+services:
+  # Rails Application - Production Build
+  web:
+    build:
+      context: .
+      target: production
+    environment:
+      - RAILS_ENV=production
+      - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-event_feedback_hub_production}
+      - REDIS_URL=redis://redis:6379/0
+      # IMPORTANT: Use a secure secret key in real production!
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-change_this_to_a_secure_64_character_secret_in_production}
+      - RAILS_SERVE_STATIC_FILES=true
+      - RAILS_LOG_TO_STDOUT=true
+    # Remove development volumes - production uses precompiled assets
+    volumes: []
+
+  # Production database
+  postgres:
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-event_feedback_hub_production}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
