@@ -93,7 +93,7 @@ Rails.application.configure do
   # ActionCable configuration for production
   config.action_cable.disable_request_forgery_protection = true
   config.action_cable.allow_same_origin_as_host = false
-  config.action_cable.allowed_request_origins = [ 
+  config.action_cable.allowed_request_origins = [
     /http:\/\/129\.212\.198\.147*/,
     /https:\/\/129\.212\.198\.147*/
   ]
