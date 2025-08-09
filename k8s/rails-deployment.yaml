@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-app
+  labels:
+    app: rails-app
+spec:
+  replicas: 1  # Limited by s-2vcpu-2gb node memory capacity
+  selector:
+    matchLabels:
+      app: rails-app
+  template:
+    metadata:
+      labels:
+        app: rails-app
+    spec:
+      imagePullSecrets:
+      - name: registry-event-feedback-hub
+      containers:
+      - name: rails-app
+        image: registry.digitalocean.com/event-feedback-hub/rails-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: RAILS_ENV
+          value: "production"
+        - name: RAILS_SERVE_STATIC_FILES
+          value: "true"
+        - name: RAILS_LOG_TO_STDOUT
+          value: "true"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: database-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: redis-url
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: secret-key-base
+        - name: PGHOST
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: pg-host
+        - name: PGPORT
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: pg-port
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: pg-user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: pg-password
+        - name: PGDATABASE
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: pg-database
+        - name: PGSSLMODE
+          value: "require"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
